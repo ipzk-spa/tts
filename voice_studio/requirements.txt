@@ -1,0 +1,17 @@
+# Ukrainian Voice Studio — програма №1 (синтез мовлення)
+# Встановлення: pip install -r voice_studio\requirements.txt
+# (Robinhad/StyleTTS2/RVC двигуни ставляться окремо в ізольовані середовища:
+#  tools\setup_robinhad.ps1, tools\setup_styletts2.ps1, tools\setup_rvc.ps1)
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+ukrainian-word-stress>=1.1.0
+num2words>=0.5.13
+scipy>=1.11.0
+numpy>=1.24.0
+soundfile>=0.12.1
+pydub>=0.25.1
+imageio-ffmpeg>=0.5.1
+pytest>=8.0.0
+httpx>=0.27.0

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spag Voice Studio</title>
+  <link rel="stylesheet" href="/css/studio.css">
+</head>
+
+<body>
+  <div class="app">
+    <header id="studio-hero">
+      <div class="hero-row">
+        <div class="hero-badge" aria-hidden="true">SVS+</div>
+        <div class="hero-copy">
+          <p class="hero-kicker">локальна студія озвучки</p>
+          <h1 id="app-title">Spag Voice Studio</h1>
+        </div>
+        <div class="on-air"><span class="dot"></span> SVS+ ONLINE</div>
+      </div>
+    </header>
+
+    <div class="columns">
+      <div class="col-left">
+        <section class="studio-card">
+          <div class="eyebrow"><span class="num">1</span> Текст</div>
+          <textarea id="text-in"
+            placeholder="Введіть український текст. Можна використовувати розмітку — див. довідку нижче."></textarea>
+          <div class="btn-row">
+            <button type="button" class="btn btn-secondary" id="verbalize-btn">📝 Вербалізувати</button>
+            <button type="button" class="btn btn-secondary" id="stress-btn"
+              title="Показати автонаголос (+ перед голосною)">➕ Автонаголос</button>
+          </div>
+          <details class="accordion">
+            <summary>📖 Довідка з розмітки тексту</summary>
+            <div class="accordion-body">
+              <table>
+                <tr>
+                  <th>Що потрібно</th>
+                  <th>Як написати</th>
+                </tr>
+                <tr>
+                  <td>Наголос вручну</td>
+                  <td><code>+</code> перед голосною: <code>прив+іт</code></td>
+                </tr>
+                <tr>
+                  <td>Пауза</td>
+                  <td><code>[пауза=0.8]</code></td>
+                </tr>
+                <tr>
+                  <td>Повільніше</td>
+                  <td><code>[повільно]текст[/повільно]</code></td>
+                </tr>
+                <tr>
+                  <td>Швидше</td>
+                  <td><code>[швидко]текст[/швидко]</code></td>
+                </tr>
+              </table>
+            </div>
+          </details>
+
+          <p class="field-hint" style="margin-top:12px">Приклади (натисніть, щоб вставити):</p>
+          <div class="examples" id="examples"></div>
+        </section>
+
+        <section class="studio-card">
+          <div class="eyebrow"><span class="num">2</span> Двигун синтезу</div>
+          <p class="field-hint">Robinhad — 5 дикторських голосів. StyleTTS2 — 30 стилів + темп. Обидва можна
+            переозвучити RVC (пункт 4).</p>
+          <div class="engine-group" id="engine-radio">
+            <label class="engine-pill"><input type="radio" name="engine" value="robinhad"> 🏆 Robinhad (5
+              голосів)</label>
+            <label class="engine-pill"><input type="radio" name="engine" value="styletts2"> 🎨 StyleTTS2 (30
+              голосів)</label>
+          </div>
+          <div class="engine-note" id="engine-note"></div>
+        </section>
+
+        <section class="studio-card" id="robinhad-settings">
+          <div class="eyebrow"><span class="num">3</span> Налаштування голосу — Robinhad</div>
+          <label class="field-label" for="rh-voice">Голос</label>
+          <select id="rh-voice"></select>
+          <label class="field-label" for="rh-stress">Наголос під час синтезу</label>
+          <select id="rh-stress">
+            <option value="model" selected>Модель (природніше)</option>
+            <option value="dictionary">Словник</option>
+          </select>
+          <p class="field-hint">Ручні «+» мають пріоритет.</p>
+          <label class="check-row">
+            <input type="checkbox" id="rh-verbalize" checked>
+            <span>Вербалізувати числа/дати/скорочення</span>
+          </label>
+          <details class="accordion">
+            <summary>⚙️ Стабільність синтезу</summary>
+            <div class="accordion-body">
+              <p>Змінюйте лише якщо чуєте обрізання або повтори.</p>
+              <div class="slider-row">
+                <label><span>Чутливість зупинки (threshold)</span><span id="rh-threshold-val">0.5</span></label>
+                <input type="range" id="rh-threshold" min="0.1" max="0.9" step="0.05" value="0.5">
+              </div>
+              <div class="slider-row">
+                <label><span>Макс. довжина (maxlenratio)</span><span id="rh-maxlen-val">10</span></label>
+                <input type="range" id="rh-maxlen" min="4" max="20" step="1" value="10">
+              </div>
+              <label class="check-row">
+                <input type="checkbox" id="rh-att">
+                <span>Обмежити вікно уваги</span>
+              </label>
+            </div>
+          </details>
+        </section>
+
+        <section class="studio-card hidden" id="styletts2-settings">
+          <div class="eyebrow"><span class="num">3</span> Налаштування голосу — StyleTTS2</div>
+          <label class="field-label" for="st-voice">Голос (стиль)</label>
+          <select id="st-voice"></select>
+          <div class="slider-row">
+            <label><span>Темп мовлення</span><span id="st-speed-val">1.0</span></label>
+            <input type="range" id="st-speed" min="0.7" max="1.3" step="0.05" value="1.0">
+          </div>
+          <label class="check-row">
+            <input type="checkbox" id="st-verbalize" checked>
+            <span>Вербалізувати числа/дати/скорочення</span>
+          </label>
+        </section>
+
+        <section class="studio-card">
+          <div class="eyebrow teal"><span class="num">4</span> Гібрид RVC</div>
+          <div class="info-banner">Спочатку TTS читає текст, потім RVC дає ваш тембр. Файли порівнюються за хешем —
+            дублікати не створюються.</div>
+          <div class="engine-note" id="rvc-status"></div>
+          <label class="check-row">
+            <input type="checkbox" id="hybrid-enabled">
+            <span>Увімкнути переозвучення власною моделлю</span>
+          </label>
+          <div class="hybrid-inner hidden" id="hybrid-inner">
+            <div class="file-row">
+              <div>
+                <label class="field-label">Модель RVC (.pth)</label>
+                <input type="file" id="hybrid-pth-file" accept=".pth">
+              </div>
+              <div>
+                <label class="field-label">Індекс RVC (.index)</label>
+                <input type="file" id="hybrid-index-file" accept=".index">
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="hybrid-upload-btn">💾 Зберегти файли моделі</button>
+            <div class="upload-status" id="hybrid-upload-status"></div>
+            <label class="field-label" for="hybrid-pth-path">Шлях до моделі (.pth)</label>
+            <input type="text" id="hybrid-pth-path" placeholder="models/uploads/rvc/...">
+            <label class="field-label" for="hybrid-index-path">Шлях до індексу (.index)</label>
+            <input type="text" id="hybrid-index-path" placeholder="models/uploads/rvc/...">
+            <div class="file-row" style="margin-top:12px">
+              <div>
+                <label class="field-label" for="hybrid-f0">Метод F0</label>
+                <select id="hybrid-f0"></select>
+              </div>
+              <div class="slider-row">
+                <label><span>Index rate</span><span id="hybrid-index-rate-val">0.75</span></label>
+                <input type="range" id="hybrid-index-rate" min="0" max="1" step="0.05" value="0.75">
+              </div>
+              <div class="slider-row">
+                <label><span>Зміна тону (напівтони)</span><span id="hybrid-pitch-val">0</span></label>
+                <input type="range" id="hybrid-pitch" min="-12" max="12" step="1" value="0">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <button type="button" class="btn btn-primary" id="synth-btn">🔊 Синтезувати</button>
+        <p class="toast toast-error hidden" id="toast-error" role="alert"></p>
+      </div>
+
+      <div class="col-right">
+        <aside class="results-rail" id="results-rail">
+          <div class="results-rail-head">
+            <div>
+              <div class="eyebrow teal results-eyebrow"><span class="num">▶</span> Результати</div>
+              <p class="results-sub" id="results-count">Поки порожньо — натисніть «Синтезувати»</p>
+            </div>
+          </div>
+
+          <div class="progress-panel hidden" id="progress-panel" aria-live="polite">
+            <div class="progress-head">
+              <span id="progress-label">Синтез…</span>
+              <span id="progress-eta">~ —</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-meta" id="progress-meta">0%</div>
+          </div>
+
+          <div class="results-empty" id="results-empty">
+            <div class="results-empty-icon">SVS+</div>
+            <p>Тут з’являться готові озвучки.<br>Нові — зверху, старі лишаються до перезавантаження.</p>
+          </div>
+
+          <div class="results-list" id="results-list"></div>
+        </aside>
+
+        <details class="accordion about-panel">
+          <summary>ℹ️ Про голоси та моделі</summary>
+          <div class="accordion-body">
+            <p><strong>Spag Voice Studio (SVS+)</strong> — локальна студія озвучки.</p>
+            <p><strong>🏆 Robinhad</strong> — 5 голосів. <code>tools\setup_robinhad.ps1</code></p>
+            <p><strong>🎨 StyleTTS2</strong> — 30 стилів. <code>tools\setup_styletts2.ps1</code></p>
+            <p><strong>🎙️ Гібрид</strong> — RVC поверх TTS. <code>tools\setup_rvc.ps1</code></p>
+            <p>Лог: <code>logs\errors.txt</code></p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <div>
+          <strong>Spag Voice Studio</strong>
+          <span>AI-розробник · Spag</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="https://t.me/ghost_in_side" target="_blank" rel="noopener noreferrer">Telegram · @ghost_in_side</a>
+      </div>
+    </footer>
+  </div>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

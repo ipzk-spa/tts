@@ -1,0 +1,68 @@
+# --- Віртуальні середовища (десятки ГБ) ---
+.venv/
+.venv-*/
+venv/
+env/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg
+dist/
+build/
+
+# --- Кеш моделей / Hugging Face ---
+.cache/
+**/huggingface/
+hubert_base.pt
+rmvpe.pt
+
+# --- Ваги TTS (завантажуються setup-скриптами) ---
+models/robinhad/*
+!models/robinhad/.gitkeep
+models/uploads/**
+!models/uploads/rvc/
+!models/uploads/rvc/.gitkeep
+models/uploads/rvc/*
+!models/uploads/rvc/.gitkeep
+
+# Великі ваги / особисті моделі; маленькі .pt стилі StyleTTS2 можна тримати в репо
+*.pth
+*.index
+*.onnx
+*.ckpt
+*.safetensors
+models/my/
+
+# --- Робочі / особисті файли ---
+logs/*
+!logs/.gitkeep
+temp/*
+!temp/.gitkeep
+voice_studio/outputs/*
+!voice_studio/outputs/.gitkeep
+*.wav
+*.mp3
+*.flac
+*.ogg
+
+# --- IDE / ОС ---
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Секрети (на всяк випадок) ---
+.env
+.env.*
+!.env.example
+*.pem
+credentials.json
