@@ -1,7 +1,7 @@
-# Ukrainian Voice Studio — програма №1 (синтез мовлення)
+# Spag Voice Studio (SVS+) — базові залежності UI/API
 # Встановлення: pip install -r voice_studio\requirements.txt
-# (Robinhad/StyleTTS2/RVC двигуни ставляться окремо в ізольовані середовища:
-#  tools\setup_robinhad.ps1, tools\setup_styletts2.ps1, tools\setup_rvc.ps1)
+# Двигуни Robinhad / StyleTTS2 / RVC — окремо:
+#   tools\setup_robinhad.ps1, tools\setup_styletts2.ps1, tools\setup_rvc.ps1
 
 fastapi>=0.115.0
 uvicorn[standard]>=0.32.0

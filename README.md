@@ -14,8 +14,8 @@
 першого встановлення.
 
 ```powershell
-git clone https://github.com/<ваш-акаунт>/<репо>.git
-cd <репо>
+git clone https://github.com/ipzk-spa/tts.git
+cd tts
 
 # 1) Базові залежності (UI + API)
 powershell -ExecutionPolicy Bypass -File .\install.ps1

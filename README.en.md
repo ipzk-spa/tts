@@ -14,8 +14,8 @@ Requirements: **Windows 10/11**, **Python 3.10+** (preferably **3.11**),
 internet for the first install.
 
 ```powershell
-git clone https://github.com/<your-account>/<repo>.git
-cd <repo>
+git clone https://github.com/ipzk-spa/tts.git
+cd tts
 
 # 1) Base dependencies (UI + API)
 powershell -ExecutionPolicy Bypass -File .\install.ps1
